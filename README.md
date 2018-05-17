@@ -2,11 +2,11 @@
 
 ## Polymorphism
 
-Gebruik het type van de parent om verschillende typen children generiek te kunnen aanspreken. In dit voorbeeld erven `Car` en `Boat` van `GameObject`. `GameObject` heeft een `update` method:
+Gebruik het type van de parent om verschillende typen children generiek te kunnen aanspreken. In dit voorbeeld erven `Health` en `Bomb` van `GameObject`. `GameObject` heeft een `update` method:
 ```
 objects:GameObject[] = []
 
-this.objects.push(new Car(), new Boat())
+this.objects.push(new Health(), new Bomb())
 
 for(let o of this.objects){
     o.update()
