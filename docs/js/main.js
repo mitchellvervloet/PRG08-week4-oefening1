@@ -6,7 +6,7 @@ var Bomb = (function () {
         foreground.appendChild(this.element);
         this.speed = 4 + Math.random() * 8;
         this.x = Math.random() * (window.innerWidth - 200);
-        this.y = -142;
+        this.y = -400 - (Math.random() * 450);
     }
     Bomb.prototype.update = function () {
         this.y += this.speed;
@@ -17,7 +17,7 @@ var Bomb = (function () {
     };
     Bomb.prototype.reset = function () {
         this.x = Math.random() * (window.innerWidth - 200);
-        this.y = -142;
+        this.y = -400 - (Math.random() * 450);
     };
     return Bomb;
 }());
@@ -63,31 +63,52 @@ var Car = (function () {
     };
     return Car;
 }());
+var Fire = (function () {
+    function Fire() {
+        this.element = document.createElement("fire");
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.appendChild(this.element);
+        this.x = 100;
+        this.y = window.innerHeight - this.getRectangle().height;
+    }
+    Fire.prototype.update = function () {
+        this.element.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    Fire.prototype.getRectangle = function () {
+        return this.element.getBoundingClientRect();
+    };
+    Fire.prototype.remove = function () {
+    };
+    return Fire;
+}());
 var Game = (function () {
     function Game() {
-        this.ui = new UI();
+        this.score = 0;
+        this.ui = new UI(this);
         this.car = new Car();
         this.bombs = [new Bomb(), new Bomb(), new Bomb(), new Bomb()];
+        this.healths = [new Health(), new Health()];
         this.gameLoop();
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.car.update();
-        for (var _i = 0, _a = this.bombs; _i < _a.length; _i++) {
-            var b = _a[_i];
+        this.ui.update();
+        for (var _i = 0, _a = this.healths; _i < _a.length; _i++) {
+            var h = _a[_i];
+            h.update();
+        }
+        for (var _b = 0, _c = this.bombs; _b < _c.length; _b++) {
+            var b = _c[_b];
             b.update();
             if (Util.checkCollision(this.car.getRectangle(), b.getRectangle())) {
                 b.reset();
-                this.ui.bombDestroyed();
+                this.score++;
             }
             if (b.getRectangle().bottom - b.getRectangle().height > window.innerHeight) {
                 b.reset();
-                this.ui.buildingDestroyed();
+                console.log("Voeg Fire instance toe op positie " + b.getRectangle().left);
             }
-        }
-        this.ui.update();
-        if (this.ui.getBuildingsDestroyed() < 4) {
-            console.log("GAME OVER");
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -105,28 +126,37 @@ var GameOver = (function () {
     };
     return GameOver;
 }());
+var Health = (function () {
+    function Health() {
+        this.element = document.createElement("health");
+        var foreground = document.getElementsByTagName("foreground")[0];
+        foreground.appendChild(this.element);
+        this.speed = 4 + Math.random() * 8;
+        this.x = Math.random() * (window.innerWidth - 200);
+        this.y = -400 - (Math.random() * 450);
+    }
+    Health.prototype.update = function () {
+        this.y += this.speed;
+        this.element.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    Health.prototype.getRectangle = function () {
+        return this.element.getBoundingClientRect();
+    };
+    Health.prototype.reset = function () {
+        this.x = Math.random() * (window.innerWidth - 200);
+        this.y = -400 - (Math.random() * 450);
+    };
+    return Health;
+}());
 var UI = (function () {
-    function UI() {
-        this.score = 0;
-        this.destroyedbuildings = 0;
+    function UI(g) {
+        this.game = g;
         this.textfield = document.createElement("textfield");
-        this.bar = document.createElement("bar");
         var foreground = document.getElementsByTagName("foreground")[0];
         foreground.appendChild(this.textfield);
-        foreground.appendChild(this.bar);
     }
     UI.prototype.update = function () {
-        this.textfield.innerHTML = "Score: " + this.score;
-        this.bar.style.backgroundPositionX = 0 - (this.destroyedbuildings * 72) + "px";
-    };
-    UI.prototype.buildingDestroyed = function () {
-        this.destroyedbuildings++;
-    };
-    UI.prototype.getBuildingsDestroyed = function () {
-        return this.destroyedbuildings;
-    };
-    UI.prototype.bombDestroyed = function () {
-        this.score++;
+        this.textfield.innerHTML = "Score: " + this.game.score;
     };
     return UI;
 }());

@@ -24,30 +24,28 @@ game * {
 car {
     width:224px; height:138px;
     background-image: url(../images/car.png);
-    cursor: pointer;
-}
-
-bar {
-    background-image: url(../images/scorebar.png);
-    background-repeat: no-repeat;
-    width:290px; height:75px;
-    overflow: hidden;
-    background-position-x: 0px;
 }
 
 textfield {
     font-size: 1.4em;
     width:530px;
     text-shadow: 0px 4px 0px rgba(0,0,0,0.5);
-    transform: translateY(80px);
+    transform: translate(20px, 20px);
 }
 
+fire {
+    width:120px; height:150px;
+    background-image: url(../images/fire.png);
+}
 
+health {
+    width:140px; height:145px;
+    background-image: url(../images/health.png);
+}
 
 bomb {
     width:142px; height:224px;
     background-image: url(../images/bomb.png);
-    cursor: pointer;
 }
 
 cloud {

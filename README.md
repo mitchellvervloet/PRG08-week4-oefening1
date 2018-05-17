@@ -24,34 +24,44 @@ if(o instanceof Car) {
 
 ## Opdracht
 
-- Maak een array in Game.ts waarin de UI, de Car en de Bombs geplaatst worden
-- In de gameloop loop je door die array heen. Daarbij roep je de `update` functie van UI, car en bomb aan.
-- Zorg met `instanceof` dat de checks voor collision en game-over blijven werken
+- Maak een array in Game.ts waarin de UI, de Health en de Bomb instances geplaatst worden
+- De Car blijft wel een losse property, dit is nodig omdat we bij elk element willen kijken of het element de car raakt.
+- In de gameloop loop je door de gameobjects array heen. Daarbij roep je de `update` functie van UI, health en bomb aan.
+- Zorg met `instanceof` dat de checks voor collision blijven werken!
 
-## Opdracht en huiswerk
+## Fire!
 
-- Bij gameover maak je het `foreground` element in de DOM leeg (daarin staan de car, ui, en bomb elementen)
-- Je maakt ook de gameobjects array in game.ts leeg
-- Plaats een instance van gameover.ts in de gameobjects array. Daarvan wordt automatisch de update aangeroepen in de game loop
-- Kan je een knop maken in gameover.ts waarmee je de game opnieuw start met een car, ui en bombs?
+- Zodra een bom beneden uit beeld gaat, voeg je een `new Fire()` toe aan de gameobjects array. Deze instance moet op dezelfde x positie verschijnen als waar de bom uit beeld ging.
+- Als er 10 vuurtjes in beeld zijn is het game over!
 
-### Foreground Element leeg maken
+## Health 
+
+- Als je collide met een health object, verwijder je alle Fire instances uit de gameobjects array. Let op dat de fire DIVS ook uit de DOM verwijderd moeten worden.
+
+### HTML Element uit DOM verwijderen
 
 ```
-const element = document.getElementsByTagName("foreground")[0]
+this.element.remove()
+```
 
-// optie 1
-element.innerHTML = ""
+### Object uit array verwijderen
 
-// optie 2
-while (element.firstChild) {
-    element.firstChild.remove();
+Je kan het beste van achter naar voren door een array loopen, zodat je tijdens de loop het object meteen uit de array kan verwijderen:
+```
+for(let i = array.length; i>=0; i--){
+    let item = array[i]
+
+    // check wat voor item dit is
+    if(item...){
+        // verwijder dit item uit de array
+        array.splice(i,1)
+    }
 }
 ```
 
 ### Collision 
 
-Gebruik de DOM rectangle om de positie en afmeting van een element te achterhalen:
+Gebruik de DOM rectangle om de positie en afmeting van een element te achterhalen. [MDN documentatie](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect)
 
 ```
 let rectangle : ClientRect = divelement.getBoundingClientRect()
