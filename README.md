@@ -38,7 +38,7 @@ if(o instanceof Car) {
 
 - Als je collide met een health object, verwijder je alle Fire instances uit de gameobjects array. Let op dat de fire DIVS ook uit de DOM verwijderd moeten worden.
 
-### HTML Element uit DOM verwijderen
+### Fire Element uit DOM verwijderen
 
 ```
 this.element.remove()
