@@ -35,6 +35,20 @@ if(o instanceof Car) {
 - Plaats een instance van gameover.ts in de gameobjects array. Daarvan wordt automatisch de update aangeroepen in de game loop
 - Kan je een knop maken in gameover.ts waarmee je de game opnieuw start met een car, ui en bombs?
 
+### Foreground Element leeg maken
+
+```
+const element = document.getElementsByTagName("foreground")[0]
+
+// optie 1
+element.innerHTML = ""
+
+// optie 2
+while (element.firstChild) {
+    element.firstChild.remove();
+}
+```
+
 ### Collision 
 
 Gebruik de DOM rectangle om de positie en afmeting van een element te achterhalen:
